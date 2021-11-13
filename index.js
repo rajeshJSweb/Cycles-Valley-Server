@@ -56,14 +56,13 @@ async function run() {
             if (user?.role === 'admin') {
                 isAdmin = true;
             }
-            res.json({ admin: isAdmin });
+            res.send({ admin: isAdmin });
        })
 
         app.post('/users',async (req, res) => {
             const user = req.body;
             const result = await usersCollection.insertOne(user);
             res.send(result);
-            console.log(result);
         })
 
         app.put('/users', async (req, res) => {
@@ -72,6 +71,7 @@ async function run() {
             const options = { upsert: true };
             const updateDoc = { $set: user };
             const result = await usersCollection.updateOne(filter, updateDoc, options)
+            res.send(result);
         })
 
         app.put('/users/admin', async (req, res) => {
@@ -82,7 +82,8 @@ async function run() {
             res.send(result);
         })
 
-        //get order
+        //get order  ....
+
 
         app.get('/singleOrder/:id',async (req, res) => {
             const result = await orderCollection.find({ _id: ObjectId(req.params.id) }).toArray();
@@ -138,7 +139,7 @@ async function run() {
   run().catch(console.dir);
 
 app.get('/', (req, res) => {
-    res.send('Server is running')
+    res.send('Cycle valley server is running')
 })
 
 app.listen(port, () => {
